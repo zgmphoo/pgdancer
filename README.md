@@ -1,2 +1,2 @@
 # Pgdancer
-Common Dynamic Data Visualization Framework for Python
+一个python的通用动态数据可视化框架
