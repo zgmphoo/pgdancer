@@ -37,11 +37,11 @@ default_settings = {
 
     # 图标位置
     # Icon location
-    "icon": "icon.png",  # type:str
-    "red_start": "red_start.png",  # type:str
+    "icon": "../images/icon.png",  # type:str
+    "red_start": "../images/red_start.png",  # type:str
     "red_start_x": 50,  # type:int
     "red_start_y": 65,  # type:int
-    "green_start": "green_start.png",  # type:str
+    "green_start": "../images/green_start.png",  # type:str
 
     # 首页大字体的设置
     # start screen headline font settings

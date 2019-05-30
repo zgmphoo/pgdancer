@@ -1,11 +1,12 @@
+import os
 import sys
 import math
 
 import pandas as pd
 import pygame
 
-from _core import genDict, Recter, getRoundDownList, DataLine
-from settings import default_settings, color_set
+from pgdancer._core import genDict, Recter, getRoundDownList, DataLine
+from pgdancer.settings import default_settings, color_set
 
 
 class Histogram(object):
@@ -97,13 +98,13 @@ class Histogram(object):
 
         # 缩放图片
         # transform start image
-        red_surf = pygame.image.load(default_settings["red_start"]).convert_alpha()
+        red_surf = pygame.image.load(os.path.join(os.getcwd(), "images", default_settings["red_start"])).convert_alpha()
         start_rect = red_surf.get_rect()
         red_surf = pygame.transform.smoothscale(red_surf, (start_rect.width // 2, start_rect.height // 2))
         center = (default_settings["red_start_x"] * self.grad_x, default_settings["red_start_y"] * self.grad_y)
         start_rect = red_surf.get_rect(center=center)
         r = (start_rect.right - start_rect.left) / 2
-        green_surf = pygame.image.load(default_settings["green_start"]).convert_alpha()
+        green_surf = pygame.image.load(os.path.join(os.getcwd(), "images", default_settings["green_start"])).convert_alpha()
         green_surf = pygame.transform.smoothscale(green_surf, (start_rect.width, start_rect.height))
         can_click = False
 
@@ -375,7 +376,7 @@ class Histogram(object):
         pygame.init()
         size = self.width, self.height
         fclock = pygame.time.Clock()
-        icon = pygame.image.load(default_settings["icon"])
+        icon = pygame.image.load(os.path.join(os.getcwd(), "images", default_settings["icon"]))
         pygame.display.set_icon(icon)
         screen = pygame.display.set_mode(size, self.window_type)
         if isinstance(window_name, str):
