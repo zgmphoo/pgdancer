@@ -1,6 +1,6 @@
 ### Pgdancer：一个python的通用动态数据可视化框架
 ---
-[English]()
+[English](readme-en.md)
 
 ### 介绍
 这是一个python的数据可视化项目，基于pygame游戏引擎。能够将pandas的Dataframe数据使用动态的方法展示。
@@ -9,23 +9,18 @@
 
 ### 效果展示
 
-[images]()
+![images](https://github.com/zgmphoo/Pgdancer/blob/master/docs/images/pg_pic1.png)
+![images](https://github.com/zgmphoo/Pgdancer/blob/master/docs/images/pg_pic2.png)
 
 # 快速开始
 
-pandas的格式如下：
+pandas的Dataframe格式如下：
 
-| name  | type  | value | date  |
-| ----- | ----- | ----- | ----- |
-| 名称1 | 类型1 | 值1   | 日期1 |
-| 名称2 | 类型2 | 值2   | 日期2 |
+![images](https://github.com/zgmphoo/Pgdancer/blob/master/docs/images/dataframe_format.png)
 
-其中“名称”会出现在柱状图的左侧作为Y轴，而“类型-名称”会作为附加信息出现在柱状图上。
 
-类型与柱状图的颜色相关，建议命名为不包含空格或者特殊符号的中英文字符。
+Pgdancer内置了31种16进制的颜色，会随机生成一个颜色。
 
-值与柱状图的长度绑定，必须是整数或浮点数。
 
-日期建议使用的格式为"YYYY-MM-DD"。
 
 # 配置
