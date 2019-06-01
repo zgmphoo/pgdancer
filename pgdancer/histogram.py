@@ -260,11 +260,11 @@ class Histogram(object):
                     if dic2[name] < rank_number:  # Continue to be the top rank_number behind
                         y_diff = ((dic2[name] - value) * full_height) / ftime
                     else:  # Previously the top rank_number and later retired from the top rank_number
-                        y_diff = ((self.height + self.grad_y) - y) / ftime
+                        y_diff = ((self.height + 5 * self.grad_y) - y) / ftime
                     recter = Recter(name, y, v, x_diff, y_diff, x_mean, old_x)
                     all_lst.append(recter)
                 else:  # Not the top rank_number before
-                    y = self.height + self.grad_y
+                    y = self.height + 5 * self.grad_y
                     if dic2[name] < rank_number:  # Then entered the top rank_number
                         y_diff = ((start_y + dic2[name] * full_height) - y) / ftime
                     else:  # Not yet the top rank_number
