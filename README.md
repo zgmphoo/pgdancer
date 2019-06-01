@@ -1,5 +1,5 @@
 ### Pgdancer：一个python的通用动态数据可视化框架
-------
+====
 
 [English](readme-en.md)
 
@@ -10,8 +10,7 @@
 
 ### 效果展示
 
-![images](https://github.com/zgmphoo/Pgdancer/blob/master/docs/images/pg_pic1.png)
-![images](https://github.com/zgmphoo/Pgdancer/blob/master/docs/images/pg_pic2.png)
+<img>
 
 # 快速开始
 
