@@ -14,7 +14,7 @@ class Histogram(object):
     Class: Dynamic data visualization bar chart
     """
 
-    def __init__(self, dataframe, window_width, window_height, window_type=0, hava_picture=False):
+    def __init__(self, dataframe, window_width, window_height, window_type=0, has_image=False):
         """
         
         :param dataframe: type pandas's Dataframe 
@@ -42,7 +42,7 @@ class Histogram(object):
         self.grad_x = int(self.width / 100)
         self.half_grad_x = int(self.grad_x / 2)
         self.grad_y = int(self.height / 100)
-        self.hava_picture = hava_picture
+        self.has_image = has_image
 
     def terminate(self):
         pygame.quit()
