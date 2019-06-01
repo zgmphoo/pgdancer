@@ -14,7 +14,7 @@ class Histogram(object):
     Class: Dynamic data visualization bar chart
     """
 
-    def __init__(self, dataframe, window_width, window_height, window_type=0, has_image=False):
+    def __init__(self, dataframe, window_width=1600, window_height=900, window_type=0, has_image=False):
         """
         
         :param dataframe: type pandas's Dataframe 
