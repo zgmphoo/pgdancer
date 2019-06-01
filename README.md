@@ -16,7 +16,7 @@
 
 pandas的Dataframe格式如下：
 
-![images](https://github.com/zgmphoo/Pgdancer/blob/master/docs/images/dataframe_format.png)
+![images](docs/images/dataframe_format.png)
 
 ```python
 git clone https://github.com/zgmphoo/pgdancer.git
