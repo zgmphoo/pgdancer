@@ -5,8 +5,8 @@ import math
 import pandas as pd
 import pygame
 
-from pgdancer._core import genDict, Recter, getRoundDownList, DataLine
-from pgdancer.settings import default_settings, color_set
+from pgdancer._core import genDict, Recter, getRoundDownList, DataLine, read_settings
+from pgdancer.core_settings import default_settings, color_set
 
 
 class Histogram(object):
@@ -14,14 +14,18 @@ class Histogram(object):
     Class: Dynamic data visualization bar chart
     """
 
-    def __init__(self, dataframe, window_width=1600, window_height=900, window_type=0, has_image=False):
+    def __init__(self, dataframe, window_width=1600, window_height=900, window_type=0, settings=None,):
         """
         
         :param dataframe: type pandas's Dataframe 
         :param window_width: window's width
         :param window_height: window's height
         :param window_type: window's type, user: 0, 1, 2, 3
-        type_dict = {""}
+        type_dict = {0: 0,   ---> commom window
+                    1: pygame.NOFRAME,   ---> no have close button
+                    2: pygame.FULLSCREEN  --->full screen window
+                    }
+        :param settings: Your settings file's name, example: "settings.py"
         """
         if isinstance(dataframe, pd.DataFrame):
             self.df = dataframe
@@ -42,7 +46,18 @@ class Histogram(object):
         self.grad_x = int(self.width / 100)
         self.half_grad_x = int(self.grad_x / 2)
         self.grad_y = int(self.height / 100)
-        self.has_image = has_image
+        if settings is None:
+            self.settings = default_settings
+        else:
+            if isinstance(settings, str):
+                file_path = os.path.join(os.getcwd(), settings)
+                print(file_path)
+                setting = read_settings(file_path)
+                default_settings.update(setting)
+                self.settings = default_settings
+            else:
+                raise Exception("param:Your_settings should type:str! example: 'settings.py'")
+
 
     def terminate(self):
         pygame.quit()
@@ -70,41 +85,41 @@ class Histogram(object):
         """
         # 首页大字体的设置
         # start screen headline font setings
-        headline_color = pygame.Color(default_settings["first_headline_color"])
-        headline_font = pygame.font.SysFont(font_style, int(default_settings["first_headline_size"] * self.grad_x), \
-                                            default_settings["first_headline_bold"])
+        headline_color = pygame.Color(self.settings["first_headline_color"])
+        headline_font = pygame.font.SysFont(font_style, int(self.settings["first_headline_size"] * self.grad_x), \
+                                            self.settings["first_headline_bold"])
         if isinstance(first_headline, str):
             headline_surf = headline_font.render(first_headline, True, headline_color)
         else:
             raise TypeError("first_headline not str!")
         headline_rect = headline_surf.get_rect( \
             center=(
-                default_settings["headline_center_x"] * self.grad_x,
-                default_settings["headline_center_y"] * self.grad_y))
+                self.settings["headline_center_x"] * self.grad_x,
+                self.settings["headline_center_y"] * self.grad_y))
 
         # 首页小字体的设置
         # start screen subtitle font setings
-        subtitle_color = pygame.Color(default_settings["first_subtitle_color"])
-        subtitle_font = pygame.font.SysFont(font_style, int(default_settings["first_subtitle_size"] * self.grad_x), \
-                                            default_settings["first_subtitle_bold"])
+        subtitle_color = pygame.Color(self.settings["first_subtitle_color"])
+        subtitle_font = pygame.font.SysFont(font_style, int(self.settings["first_subtitle_size"] * self.grad_x), \
+                                            self.settings["first_subtitle_bold"])
         if isinstance(first_subtitle, str):
             subtitle_surf = subtitle_font.render(first_subtitle, True, subtitle_color)
         else:
             raise TypeError("first_subtitle not str!")
         subtitle_rect = subtitle_surf.get_rect( \
             center=(
-                default_settings["subtitle_center_x"] * self.grad_x,
-                default_settings["subtitle_center_y"] * self.grad_y))
+                self.settings["subtitle_center_x"] * self.grad_x,
+                self.settings["subtitle_center_y"] * self.grad_y))
 
         # 缩放图片
         # transform start image
-        red_surf = pygame.image.load(os.path.join(os.path.dirname(__file__), "images", default_settings["red_start"])).convert_alpha()
+        red_surf = pygame.image.load(os.path.join(os.path.dirname(__file__), "images", self.settings["red_start"])).convert_alpha()
         start_rect = red_surf.get_rect()
         red_surf = pygame.transform.smoothscale(red_surf, (start_rect.width // 2, start_rect.height // 2))
-        center = (default_settings["red_start_x"] * self.grad_x, default_settings["red_start_y"] * self.grad_y)
+        center = (self.settings["red_start_x"] * self.grad_x, self.settings["red_start_y"] * self.grad_y)
         start_rect = red_surf.get_rect(center=center)
         r = (start_rect.right - start_rect.left) / 2
-        green_surf = pygame.image.load(os.path.join(os.path.dirname(__file__), "images", default_settings["green_start"])).convert_alpha()
+        green_surf = pygame.image.load(os.path.join(os.path.dirname(__file__), "images", self.settings["green_start"])).convert_alpha()
         green_surf = pygame.transform.smoothscale(green_surf, (start_rect.width, start_rect.height))
         can_click = False
 
@@ -118,7 +133,7 @@ class Histogram(object):
                     return
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     self.terminate()
-            screen.fill(pygame.Color(default_settings["start_background"]))
+            screen.fill(pygame.Color(self.settings["start_background"]))
             screen.blit(headline_surf, headline_rect)
             screen.blit(subtitle_surf, subtitle_rect)
             x, y = pygame.mouse.get_pos()
@@ -130,7 +145,7 @@ class Histogram(object):
                 screen.blit(green_surf, start_rect)
                 can_click = True
             pygame.display.update()
-            fclock.tick(default_settings["FPS"])
+            fclock.tick(self.settings["FPS"])
 
     def showDrawScreen(self, second_headline, second_subtitle):
         """
@@ -141,54 +156,54 @@ class Histogram(object):
         """
         # Defining var
         # 这里定义进度条的初始位置
-        start_x = default_settings["start_x"] * self.grad_x
-        start_y = default_settings["start_y"] * self.grad_y
+        start_x = self.settings["start_x"] * self.grad_x
+        start_y = self.settings["start_y"] * self.grad_y
 
         # one_font
-        draw_one_font = pygame.font.SysFont(font_style, int(default_settings["draw_one_size"] * self.grad_x), \
-                                            default_settings["draw_one_bold"])
-        draw_one_surf = draw_one_font.render(second_headline, True, pygame.Color(default_settings["draw_one_color"]))
+        draw_one_font = pygame.font.SysFont(font_style, int(self.settings["draw_one_size"] * self.grad_x), \
+                                            self.settings["draw_one_bold"])
+        draw_one_surf = draw_one_font.render(second_headline, True, pygame.Color(self.settings["draw_one_color"]))
         draw_one_rect = draw_one_surf.get_rect( \
             center=(
-                default_settings["draw_one_center_x"] * self.grad_x,
-                default_settings["draw_one_center_y"] * self.grad_y))
+                self.settings["draw_one_center_x"] * self.grad_x,
+                self.settings["draw_one_center_y"] * self.grad_y))
 
         # two font
-        draw_two_font = pygame.font.SysFont(font_style, int(default_settings["draw_two_size"] * self.grad_x), \
-                                            default_settings["draw_two_bold"])
-        draw_two_surf = draw_two_font.render(second_subtitle, True, pygame.Color(default_settings["draw_two_color"]))
+        draw_two_font = pygame.font.SysFont(font_style, int(self.settings["draw_two_size"] * self.grad_x), \
+                                            self.settings["draw_two_bold"])
+        draw_two_surf = draw_two_font.render(second_subtitle, True, pygame.Color(self.settings["draw_two_color"]))
         draw_two_rect = draw_two_surf.get_rect( \
             center=(
-                default_settings["draw_two_center_x"] * self.grad_x,
-                default_settings["draw_two_center_y"] * self.grad_y))
+                self.settings["draw_two_center_x"] * self.grad_x,
+                self.settings["draw_two_center_y"] * self.grad_y))
 
         # three font
-        draw_three_font = pygame.font.SysFont(font_style, int(default_settings["draw_three_size"] * self.grad_x), \
-                                              default_settings["draw_three_bold"])
+        draw_three_font = pygame.font.SysFont(font_style, int(self.settings["draw_three_size"] * self.grad_x), \
+                                              self.settings["draw_three_bold"])
 
         # four font
-        draw_four_font = pygame.font.SysFont(font_style, int(default_settings["draw_four_size"] * self.grad_x), \
-                                             default_settings["draw_four_bold"])
+        draw_four_font = pygame.font.SysFont(font_style, int(self.settings["draw_four_size"] * self.grad_x), \
+                                             self.settings["draw_four_bold"])
 
         # five font
-        draw_five_font = pygame.font.SysFont(font_style, int(default_settings["draw_five_size"] * self.grad_x), \
-                                             default_settings["draw_five_bold"])
+        draw_five_font = pygame.font.SysFont(font_style, int(self.settings["draw_five_size"] * self.grad_x), \
+                                             self.settings["draw_five_bold"])
 
         # six font
-        draw_six_font = pygame.font.SysFont(font_style, int(default_settings["draw_six_size"] * self.grad_x), \
-                                            default_settings["draw_six_bold"])
+        draw_six_font = pygame.font.SysFont(font_style, int(self.settings["draw_six_size"] * self.grad_x), \
+                                            self.settings["draw_six_bold"])
 
-        six_center_y = default_settings["draw_six_center_y"] * self.grad_y
-        line_color = pygame.Color(default_settings["line_color"])
-        line_top = default_settings["line_top"] * self.grad_y
-        line_bottom = default_settings["line_bottom"] * self.grad_y
-        background_color = pygame.Color(default_settings["draw_background"])
+        six_center_y = self.settings["draw_six_center_y"] * self.grad_y
+        line_color = pygame.Color(self.settings["line_color"])
+        line_top = self.settings["line_top"] * self.grad_y
+        line_bottom = self.settings["line_bottom"] * self.grad_y
+        background_color = pygame.Color(self.settings["draw_background"])
         # 设置前多少名排名
         # settings rank_number
-        if default_settings["rank_number"] is None:
+        if self.settings["rank_number"] is None:
             rank_number = len(self.df.index)
         else:
-            rank_number = default_settings["rank_number"]
+            rank_number = self.settings["rank_number"]
         # 设置宽度和柱形图的高度
         # calculation Rect's width
         full_height = 80 / rank_number * self.grad_y
@@ -198,7 +213,7 @@ class Histogram(object):
         df_lst = self.df.columns
         # 得到datanode节点
         # get datanode's list
-        data_line_list = getRoundDownList(self.df.values.max(), default_settings["line_number_max"])
+        data_line_list = getRoundDownList(self.df.values.max(), self.settings["line_number_max"])
         # columns's length
         number = len(df_lst)
         index_lst = list(self.df.index)
@@ -218,7 +233,7 @@ class Histogram(object):
             color_dic[index_lst[i]] = rand_color
 
         # FPS
-        ftime = default_settings["FPS"] * default_settings["time"]
+        ftime = self.settings["FPS"] * self.settings["time"]
         # 循环获取series，每次获取两组
         n = 0
         while n < number - 1:
@@ -290,7 +305,7 @@ class Histogram(object):
                     n_diff_x = node_lst[i].diff_x  # 偏差
                     n_x = start_x + node_lst[i].x + m * n_diff_x  # 位置
                     n_headline_surf = draw_six_font.render(str(n_v), True,
-                                                           pygame.Color(default_settings["draw_six_color"]))
+                                                           pygame.Color(self.settings["draw_six_color"]))
                     n_headline_rect = n_headline_surf.get_rect(center=(n_x, six_center_y))
                     screen.blit(n_headline_surf, n_headline_rect)
                     pygame.draw.aaline(screen, line_color, [n_x, line_top], [n_x, line_bottom])
@@ -319,14 +334,14 @@ class Histogram(object):
                 # draw five font
                 names = series1.name
                 draw_five_surf = draw_five_font.render(names, True,
-                                                       pygame.Color(default_settings["draw_five_color"]))
+                                                       pygame.Color(self.settings["draw_five_color"]))
                 draw_five_rect = draw_five_surf.get_rect( \
-                    center=(default_settings["draw_five_center_x"] * self.grad_x, \
-                            default_settings["draw_five_center_y"] * self.grad_y))
+                    center=(self.settings["draw_five_center_x"] * self.grad_x, \
+                            self.settings["draw_five_center_y"] * self.grad_y))
 
                 screen.blit(draw_five_surf, draw_five_rect)
                 pygame.display.update()
-                fclock.tick(default_settings["FPS"])
+                fclock.tick(self.settings["FPS"])
             n += 1
 
         # last screen
@@ -363,30 +378,30 @@ class Histogram(object):
 
             names = series2.name
             draw_five_surf = draw_five_font.render(names, True,
-                                                   pygame.Color(default_settings["draw_five_color"]))
-            draw_five_rect = draw_five_surf.get_rect(center=(default_settings["draw_five_center_x"] * self.grad_x, \
-                                                             default_settings["draw_five_center_y"] * self.grad_y))
+                                                   pygame.Color(self.settings["draw_five_color"]))
+            draw_five_rect = draw_five_surf.get_rect(center=(self.settings["draw_five_center_x"] * self.grad_x, \
+                                                             self.settings["draw_five_center_y"] * self.grad_y))
 
             screen.blit(draw_five_surf, draw_five_rect)
             pygame.display.update()
-            fclock.tick(default_settings["FPS"])
+            fclock.tick(self.settings["FPS"])
 
     def run(self, window_name, first_headline, first_subtitle, second_headline, second_subtitle):
         global fclock, screen, font_style
         pygame.init()
         size = self.width, self.height
         fclock = pygame.time.Clock()
-        icon = pygame.image.load(os.path.join(os.path.dirname(__file__), "images", default_settings["icon"]))
+        icon = pygame.image.load(os.path.join(os.path.dirname(__file__), "images", self.settings["icon"]))
         pygame.display.set_icon(icon)
         screen = pygame.display.set_mode(size, self.window_type)
         if isinstance(window_name, str):
             pygame.display.set_caption(window_name)
         else:
             raise TypeError("window_name's type not str!")
-        if default_settings["font_style"] is None:
+        if self.settings["font_style"] is None:
             font_style = self.getFontStyle()
         else:
-            font_style = default_settings["font_style"]
+            font_style = self.settings["font_style"]
         # start screen
         self.showStartScreen(first_headline, first_subtitle)
         # draw screen

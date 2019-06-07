@@ -1,4 +1,6 @@
 # The core objects and functions of this file store program
+import os
+import sys
 
 
 class Recter(object):
@@ -66,3 +68,22 @@ def getRoundDownList(number, line_max):
         value += mean
     return round_lst
 
+
+def read_settings(file_path):
+    # read settings
+    settings_dict = dict()
+    with open(file_path, "r") as f:
+        lines = f.readlines()
+        for i in range(len(lines)):
+            line = lines[i]
+            if line[0] == '#':
+                continue
+            else:
+                num = line.find("=")
+                if num == -1:
+                    continue
+                else:
+                    key = line[:num]
+                    value = eval(line[num+1:].strip())
+                    settings_dict[key] = value
+    return settings_dict
