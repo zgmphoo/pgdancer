@@ -5,7 +5,7 @@ import math
 import pandas as pd
 import pygame
 
-from pgdancer._core import genDict, Recter, getRoundDownList, DataLine, read_settings
+from pgdancer.core import genDict, Recter, getRoundDownList, DataLine, read_settings
 from pgdancer.core_settings import default_settings, color_set
 
 
