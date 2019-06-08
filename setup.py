@@ -17,9 +17,6 @@ with open("README.md", "r") as fh:
         install_requires=['pandas>=0.20.1', 'pygame>=1.9.5'],
         url='https://github.com/zgmphoo/pgdancer',
         include_package_data = True,
-        package_data = {
-            'images': ['*.png'],
-        },
         entry_points={
         'console_scripts': [
             'pgdancer=pgdancer.cmdline:main'

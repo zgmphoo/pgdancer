@@ -1,1 +1,3 @@
-include *.png
+include pgdancer/images/green_start.png
+include pgdancer/images/icon.png
+include pgdancer/images/red_start.png
