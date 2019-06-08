@@ -16,11 +16,13 @@ with open("README.md", "r") as fh:
         packages=setuptools.find_packages(),
         install_requires=['pandas>=0.20.1', 'pygame>=1.9.5'],
         url='https://github.com/zgmphoo/pgdancer',
+        include_package_data = True,
         entry_points={
         'console_scripts': [
             'pgdancer=pgdancer.cmdline:main'
             ],
         },
+        platforms=['any'],
         classifiers=[
             'Operating System :: OS Independent',
             'License :: OSI Approved :: BSD License',
