@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
         description=(
             'common dynamic data visualization framework for python'
         ),
-        long_description=long_description,
+        long_description = long_description,
         long_description_content_type="text/markdown",
         author='zgmphoo',
         author_email='zgmphoo@gmail.com',
@@ -19,7 +19,7 @@ with open("README.md", "r") as fh:
         include_package_data = True,
         package_data = {
             'images': ['*.png'],
-        }
+        },
         entry_points={
         'console_scripts': [
             'pgdancer=pgdancer.cmdline:main'
