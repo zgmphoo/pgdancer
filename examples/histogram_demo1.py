@@ -1,13 +1,7 @@
-import os
-import sys
-
 import pandas as pd
 
-sys.path.append(os.path.dirname(os.getcwd()))
 
 from pgdancer import histogram
-
-
 
 
 if __name__ == '__main__':
