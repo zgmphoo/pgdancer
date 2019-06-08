@@ -76,8 +76,8 @@ Colour problem：
 Pgdancer has 31 colors built in, and more than 31 Dataframe.index will report errors
 PS: Subsequent versions will solve the color problem
 
-# Future Version
-1.Add a dynamic style with pictures
-2.Add Background Music in settings
-3.Componentization
-4.More beautiful 
+# future Version
+1. Add a dynamic style with pictures
+2. Add Background Music in settings
+3. Componentization
+4. More beautiful 
