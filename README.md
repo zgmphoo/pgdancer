@@ -29,7 +29,7 @@ cd my_project
 ```
 
 在项目目录中，会生成 settings.py 文件作为设置文件，当你需要它的时候
-#### 下载示例csv文件,[点我下载](examples/brands_data.csv)
+#### 下载示例csv文件,[examples/brands_data.csv](examples/brands_data.csv)
 把CSV文件放在命令行终端的文件夹路径中
 
 ```python
