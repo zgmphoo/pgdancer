@@ -30,7 +30,7 @@ cd my_project
 ```
 
 In the project directory, the settings.py file is generated as the settings file when you need it.
-#### Download the sample CSV file,[Download](examples/brands_data.csv)
+#### Download the CSV file：[examples/brands_data.csv](examples/brands_data.csv)
 Place the CSV file in the folder path of the command line terminal
 
 ```python
